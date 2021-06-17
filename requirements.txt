@@ -1,4 +1,3 @@
--e git+git@github.com:nickjalbert/agentos.git@793a812a2e5dc028fb751fe306a94256edec86dc#egg=agentos
 alembic==1.6.5
 azure-core==1.15.0
 azure-storage-blob==12.8.1
