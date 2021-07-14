@@ -2,6 +2,16 @@
 # This env models a cart with a pole balancing on top of it
 import agentos
 import gym
+from dm_env import specs
+import numpy as np
+from collections import namedtuple
+
+
+# TODO - Maybe this goes into AOS?
+# https://github.com/deepmind/acme/blob/master/acme/specs.py
+EnvironmentSpec = namedtuple(
+        'EnvironmentSpec', ['observations', 'actions', 'rewards', 'discounts']
+)
 
 
 class CartPole(agentos.Environment):
@@ -29,12 +39,54 @@ class CartPole(agentos.Environment):
         self.last_obs = self.cartpole.reset()
         return self.last_obs
 
+    def get_spec(self):
+        observations = specs.BoundedArray(
+                shape=(4,),
+                dtype=np.dtype('float32'),
+                name='observation',
+                minimum=[
+                    -4.8000002e+00,
+                    -3.4028235e+38,
+                    -4.1887903e-01,
+                    -3.4028235e+38
+                ],
+                maximum=[
+                    4.8000002e+00,
+                    3.4028235e+38,
+                    4.1887903e-01,
+                    3.4028235e+38
+                ]
+        )
+        actions = specs.DiscreteArray(num_values=2)
+        rewards = specs.Array(
+                shape=(),
+                dtype=np.dtype('float32'),
+                name='reward'
+        )
+        discounts = specs.BoundedArray(
+                shape=(),
+                dtype=np.dtype('float32'),
+                name='discount',
+                minimum=0.0,
+                maximum=1.0
+        )
+        return EnvironmentSpec(
+                observations=observations,
+                actions=actions,
+                rewards=rewards,
+                discounts=discounts
+        )
 
-
-# Unit tests for Corridor
+# Unit test for Cartpole
 def run_tests():
     print("Testing Cartpole...")
     env = CartPole()
+    spec = env.get_spec()
+    assert spec is not None
+    assert spec.observations is not None
+    assert spec.actions is not None
+    assert spec.rewards is not None
+    assert spec.discounts is not None
     first_obs = env.reset()
     assert len(first_obs) == 4
     obs, reward, done, info = env.step(0)
