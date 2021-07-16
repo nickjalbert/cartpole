@@ -25,7 +25,13 @@ class CartPole(agentos.Environment):
         assert action in [0, 1]
         result = self.cartpole.step(action)
         self.last_obs, self.last_reward, self.done, self.info = result
-        return result
+        # FIXME - this cast makes it match spec
+        return (
+                np.float32(self.last_obs),
+                np.float32(self.last_reward),
+                self.done,
+                self.info
+        )
 
     @property
     def valid_actions(self):
@@ -37,7 +43,8 @@ class CartPole(agentos.Environment):
         self.last_done = False
         self.last_info = None
         self.last_obs = self.cartpole.reset()
-        return self.last_obs
+        # FIXME - this cast makes it match spec
+        return np.float32(self.last_obs)
 
     def get_spec(self):
         observations = specs.BoundedArray(
