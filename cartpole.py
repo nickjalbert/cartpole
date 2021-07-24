@@ -7,13 +7,6 @@ import numpy as np
 from collections import namedtuple
 
 
-# TODO - Maybe this goes into AOS?
-# https://github.com/deepmind/acme/blob/master/acme/specs.py
-EnvironmentSpec = namedtuple(
-        'EnvironmentSpec', ['observations', 'actions', 'rewards', 'discounts']
-)
-
-
 class CartPole(agentos.Environment):
 
     def __init__(self, *args, **kwargs):
@@ -77,7 +70,7 @@ class CartPole(agentos.Environment):
                 minimum=0.0,
                 maximum=1.0
         )
-        return EnvironmentSpec(
+        return agentos.EnvironmentSpec(
                 observations=observations,
                 actions=actions,
                 rewards=rewards,
