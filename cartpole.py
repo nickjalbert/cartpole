@@ -8,10 +8,14 @@ from collections import namedtuple
 
 
 class CartPole(agentos.Environment):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    @classmethod
+    def ready_to_initialize(cls, shared_data):
+        return True
+ 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.cartpole = gym.make('CartPole-v1')
+        self.shared_data['environment_spec'] = self.get_spec()
         self.reset()
 
     def step(self, action):
