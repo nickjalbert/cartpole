@@ -77,7 +77,7 @@ class CartPole(agentos.Environment):
 # Unit test for Cartpole
 def run_tests():
     print("Testing Cartpole...")
-    env = CartPole()
+    env = CartPole(shared_data={})
     spec = env.get_spec()
     assert spec is not None
     assert spec.observations is not None
